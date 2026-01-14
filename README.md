@@ -17,7 +17,7 @@ They exist to provide transparency & shared understanding of how Featured Apps i
 
 - This repository is **only** for apps that have already been designated as “Featured Apps” through Canton Network processes, as it is required to apply activity markers per CIP-0047 (https://github.com/global-synchronizer-foundation/cips/blob/main/cip-0047/cip-0047.md).
 - Inclusion here does **not** grant Featured App status, nor validation for the use of activity markers.
-- Each Featured App is represented by a single document with a stable identifier (`CFA – 00XX`).
+- Each Featured App is represented by a single document with a stable identifier (**Canton Featured App – 00XX**)
 
 ## Structure
 

@@ -3,7 +3,7 @@
 Please confirm the following before submitting:
 
 ### Eligibility
-- [ ] This app has already been designated as a **Featured App** by Canton Network (or this app is in the process getting approved as a **Featured App** by Canton Network)
+- [ ] This app has already been designated as a **Featured App** by Canton Network (or this app is in the process of getting approved as a **Featured App** by Canton Network)
 - [ ] I am an authorized representative of the app, or submitting with the app team’s consent
 
 ### Document

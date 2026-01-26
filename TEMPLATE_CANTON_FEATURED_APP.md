@@ -1,11 +1,10 @@
 # Canton Featured App – 00XX
 
+> Replace `00XX` with the PR number that introduces this document and then delete this comment.
+>
 > This document is a **descriptive record** for a Canton Featured App.
 > It is **non-governance**, **non-normative**, and does not define or modify any
 > Canton Improvement Proposal (CIP).
->
-> This document is intended to support interpretability during normal operation
-> and during anomalous activity periods.
 
 ---
 
@@ -18,8 +17,8 @@
 - **Primary contact:**
 - **Security / technical contact (optional):**
 - **Application-controlled PartyId(s):**
-  - <PartyId or namespace>
-  - <PartyId or namespace>
+  - `<PartyId or namespace>`
+  - `<PartyId or namespace>`
 
 (These are the PartyIds operated by the application that may anchor
 activity marker–relevant ledger state transitions.)
@@ -50,45 +49,19 @@ Examples:
 
 ## 4. Operational usage
 
-Describe the application’s current operational usage of Canton Network.
-
-- **Canton network environment(s):** (e.g. DevNet, TestNet, MainNet)
 - **Application operational status:** (e.g. development, pilot, limited production, production)
-- **Primary workflows on Canton:**  
+- **Primary workflows on Canton:**
   - bullet list of concrete workflows
 
 ---
 
 ## 5. Featured App Activity Markers (CIP-0047)
 
-This section declares the **Featured App Activity Markers** emitted by the application,
-as defined in **CIP-0047** and applicable amendments.
+> *This section declares the Featured App Activity Markers emitted by the application, as defined in CIP-0047. The information is declarative and provided for transparency. This document does not define, enforce, or modify activity marker mechanics.*
 
-The information below is **declarative** and is provided to improve transparency,
-interpretability, and governance oversight of application activity on Canton Network.
+> ***Ledger anchoring:** All declared activity markers correspond to finalized state transitions recorded on Canton Network. Activity markers are not emitted in response to UI actions or API calls alone, prior to ledger finality, or for speculative/reversible actions. The ledger is the sole source of truth for activity marker eligibility.*
 
-This document does **not** define, enforce, or modify activity marker mechanics.
-
----
-
-### 5.1 Ledger anchoring (descriptive)
-
-All declared activity markers correspond to **finalized state transitions**
-recorded on Canton Network.
-
-Activity markers are not emitted solely:
-
-- in response to user interface actions,
-- in response to API calls alone,
-- prior to ledger finality,
-- for speculative, reversible, or corrective actions.
-
-The ledger is the sole source of truth for activity marker eligibility. 
-Declared activity markers are anchored to finalized ledger state transitions involving one or more application-controlled PartyIds.
-
----
-
-### 5.2 Declared activity markers
+### 5.1 Declared activity markers
 
 For each activity marker, provide the corresponding metadata fields defined in
 CIP-0047 and applicable amendments.
@@ -106,11 +79,9 @@ userCountIndicator: <Enum>
 Notes: <Optional context>
 ```
 
----
+#### Illustrative examples (non-normative)
 
-### Illustrative examples (non-normative)
-
-#### Example A — Single-user DvP settlement
+**Example A — Single-user DvP settlement**
 
 ```
 activityCategory: DvPSettlement
@@ -121,9 +92,7 @@ userCountIndicator: SingleUser
 Notes: Represents one end user intentionally initiating a settlement.
 ```
 
----
-
-#### Example B — Batch settlement across multiple users
+**Example B — Batch settlement across multiple users**
 
 ```
 activityCategory: DvPSettlement
@@ -131,12 +100,10 @@ activityDescription: Batch settlement of matched trades across multiple users
 estimatedNotionalRange: >= $10M
 assetClass: Security
 userCountIndicator: MultipleUsersDistinctParties
-Notes: One marker represents aggregated activity across many users.
+Notes: One app marker represents aggregated activity across many users.
 ```
 
----
-
-#### Example C — Infrastructure / validator activity (no asset)
+**Example C — Infrastructure / validator activity (no asset)**
 
 ```
 activityCategory: InfrastructureHealth
@@ -147,9 +114,7 @@ userCountIndicator: ValidatorOperator
 Notes: Protocol-level activity; no asset movement involved.
 ```
 
----
-
-#### Example D — Wallet-mediated wrapped asset activity
+**Example D — Wallet-mediated wrapped asset activity**
 
 ```
 activityCategory: AssetRepresentation
@@ -161,9 +126,30 @@ Notes: Represents ledger-finalized activity initiated by wallet infrastructure.
 May occur at high frequency due to user behavior or automated wallet logic.
 ```
 
-> The volume, aggregation, or absence of activity markers does not imply per-user
-> rewards, per-transaction granularity, or economic value outside the CIP-0047
-> governance framework.
+---
+
+### 5.2 Emission strategy
+
+Describe how app marker volume relates to ledger activity:
+
+- **Emission basis:** [Per transaction | Value-proportional | Quantity-based | Batched]
+- **Rate limiting:** [Real-time | Throttled | Batched]
+- **Calculation:** [If applicable, formula or ratio]
+
+#### Emission approaches
+
+| Approach | Description | Example |
+|----------|-------------|---------|
+| **Flat rate** | 1 app marker per transaction | Each trade settlement = 1 app marker |
+| **Value-based** | App markers proportional to transaction value | 1 app marker per $100 of value |
+| **Quantity-based** | App markers based on units processed | 1 app marker per 1000 shares |
+| **Batched** | Multiple transactions → one app marker | Daily batch = 1 app marker |
+
+#### Example: Value-proportional emission
+
+> "One app marker per $100 of finalized transaction value, rounded up per individual transaction.
+> For example, a $5,000 stock issuance creates 50 app markers. App markers are rate-limited to 1–5 TPS
+> to avoid network congestion, minted asynchronously after transaction finality."
 
 ---
 
@@ -172,9 +158,6 @@ May occur at high frequency due to user behavior or automated wallet logic.
 As a general principle, Featured App Activity Markers are not emitted for
 activity that does not represent an independent, finalized economic state
 transition on the ledger.
-
-The categories below illustrate common examples of such activity and are
-provided for clarity only.
 
 Illustrative examples include:
 
@@ -188,60 +171,27 @@ This list is illustrative, descriptive, and explicitly non-exhaustive.
 
 ---
 
-## 6. Marker emission policy (app-specific)
+## 6. Abuse mitigation (descriptive)
 
-Describe, at a high level, how the application determines **when** and **how many**
-activity markers are emitted, with reference to finalized ledger activity.
+Describe high-level controls that discourage automated or artificial app marker generation.
 
-This description should clarify, where applicable:
+**Useful disclosures:**
+- Economic friction (transaction fees, minimum values, staking requirements)
+- Access controls (KYC, waitlists, invitation-only)
+- Rate limiting approach (per-user, per-entity, global)
+- Monitoring and manual review processes
 
-- whether markers scale with economic value, transaction count, or completed workflows,
-- whether markers are emitted per ledger event or per aggregated batch of ledger events,
-- whether any minimums, maximums, or rate limits apply.
+**Not required:** Implementation details, specific thresholds, or security-sensitive information.
 
-This section is descriptive only and does not define governance or tokenomics policy. 
-This description is intended to provide context for interpreting observed marker volumes and patterns.
-
----
-
-## 7. Dependencies and integrations
-
-List dependencies and integrations relevant to understanding how the application
-interacts with Canton Network and how activity may be generated or correlated.
-
-This may include, where applicable:
-
-- validators or infrastructure providers involved in operating the application,
-- other Canton applications or shared on-ledger components,
-- wallet infrastructure PartyIDs or custody systems interacting with Canton Network,
-- external systems that initiate, aggregate, or automate ledger activity.
-
-This section is descriptive and high-level; detailed architecture or security-
-sensitive information is not required.
+The goal is to provide context about whether app marker generation involves real economic activity vs. being easily automatable.
 
 ---
 
-## 8. Security and abuse-mitigation (descriptive)
-
-Provide a high-level, factual description of controls relevant to preventing
-automated or synthetic activity.
-
-Examples:
-- economic friction (fees, limits)
-- access gating or identity controls
-- rate limiting or monitoring
-- post-hoc review processes
-
-(No implementation details required.)
-
----
-
-## 9. Changelog
+## 7. Changelog
 
 - YYYY-MM-DD — Initial version
 - YYYY-MM-DD — Update summary
 
 Material changes to activity marker behavior (e.g. introduction of new
 marker categories, changes to aggregation logic, or changes in emission
-patterns) are expected to be reflected in this document promptly, in
-order to preserve interpretability of observed activity.
+patterns) should be reflected in this document promptly.
